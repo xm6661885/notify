@@ -1,0 +1,25 @@
+[project]
+name = "notify"
+version = "0.1.0"
+description = "Multi-user Web Push notification PWA and notify CLI"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi==0.118.0",
+  "uvicorn[standard]==0.37.0",
+  "pydantic==2.11.9",
+  "python-multipart==0.0.20",
+  "bcrypt==4.3.0",
+  "itsdangerous==2.2.0",
+  "pywebpush==2.5.0",
+]
+
+[dependency-groups]
+dev = ["pytest==8.4.2", "pytest-asyncio==1.2.0", "httpx==0.28.1"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.uv]
+package = false

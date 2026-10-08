@@ -1,0 +1,7 @@
+#!/bin/bash
+# notify CLI wrapper: resolves symlinks, runs cli/notify.py with the project venv.
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"; SOURCE="$(readlink "$SOURCE")"; [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"; done
+ROOT="$(cd -P "$(dirname "$SOURCE")/.." && pwd)"
+PY="$ROOT/.venv/bin/python3"; [ -x "$PY" ] || PY=python3
+exec "$PY" "$ROOT/cli/notify.py" "$@"
