@@ -20,6 +20,7 @@ export function Settings() {
   const m = me.value || null
   const [devices, setDevices] = useState<Device[] | null>(null)
   const [pwOpen, setPwOpen] = useState(false)
+  const [defTab, setDefTab] = useState<'all' | 'unread'>(() => localStorage.getItem('nt_default_tab') === 'unread' ? 'unread' : 'all')
 
   const loadDevices = () => api.devices().then((d) => setDevices(d.items)).catch(() => setDevices([]))
   useEffect(() => { refreshPush(); loadDevices() }, [])
@@ -109,6 +110,15 @@ export function Settings() {
               </div>
             </>
           )}
+
+          <div class="group-title">Feed</div>
+          <div class="group">
+            <div class="field">
+              <Segmented value={defTab} onChange={(v) => { localStorage.setItem('nt_default_tab', v); setDefTab(v) }}
+                options={[{ value: 'all', label: 'All' }, { value: 'unread', label: 'Unread' }]} />
+              <span class="fhint">Tab shown when the app opens on this device.</span>
+            </div>
+          </div>
 
           <RoutingSettings />
 

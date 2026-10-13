@@ -31,7 +31,7 @@ export function FeedPage({ view }: { view: View }) {
   const [q, setQ] = useState(init?.q || '')
   const [query, setQuery] = useState(init?.q || '')
   const [topic, setTopic] = useState(() => (view === 'inbox' && pendingTopic.value) || init?.topic || '')
-  const [unreadOnly, setUnreadOnly] = useState(init?.unreadOnly || false)
+  const [unreadOnly, setUnreadOnly] = useState(init ? !!init.unreadOnly : localStorage.getItem('nt_default_tab') === 'unread')
   const [topics, setTopics] = useState<TopicCount[]>(init?.topics || [])
   const [selected, setSelected] = useState<Set<number> | null>(null)
   const [leaving, setLeaving] = useState<Set<number>>(new Set())
@@ -275,12 +275,15 @@ export function FeedPage({ view }: { view: View }) {
             {q && <button class="search-clear" aria-label="Clear search" onClick={() => { setQ(''); setQuery('') }}><IconClose /></button>}
           </div>
 
-          {(shownTopics.length > 0 || topic || unreadOnly || items.length > 0) && (
-            <div class={`topic-row ${anim ? 'rise' : ''}`} style={{ '--i': 2 }} role="tablist" aria-label="Filter by topic">
-              <button class={`topic-chip ${!topic ? 'on' : ''}`} role="tab" aria-selected={!topic} onClick={() => setTopic('')}>All</button>
-              <button class={`topic-chip ${unreadOnly ? 'on' : ''}`} aria-pressed={unreadOnly} onClick={() => setUnreadOnly(!unreadOnly)}>
-                Unread{unreadChip > 0 && <span class="tc-n">{unreadChip}</span>}
-              </button>
+          <div class={`feed-tabs ${anim ? 'rise' : ''}`} style={{ '--i': 2 }} role="tablist" aria-label="Show">
+            <button role="tab" aria-selected={!unreadOnly} class={!unreadOnly ? 'on' : ''} onClick={() => setUnreadOnly(false)}>All</button>
+            <button role="tab" aria-selected={unreadOnly} class={unreadOnly ? 'on' : ''} onClick={() => setUnreadOnly(true)}>
+              Unread{unreadChip > 0 && <span class="tc-n">{unreadChip}</span>}
+            </button>
+          </div>
+
+          {(shownTopics.length > 0 || topic) && (
+            <div class={`topic-row ${anim ? 'rise' : ''}`} style={{ '--i': 3 }} role="tablist" aria-label="Filter by topic">
               {topic && !shownTopics.some((t) => t.key === topic.toLowerCase()) && (
                 <button class="topic-chip on" role="tab" aria-selected onClick={() => setTopic('')}>#{topic}</button>
               )}

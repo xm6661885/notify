@@ -1,6 +1,6 @@
 // Service worker: shows web pushes, routes notification taps, caches the app shell.
 // Bump CACHE when the shell changes.
-const CACHE = 'notify-v10'
+const CACHE = 'notify-v11'
 const SHELL = ['/', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/apple-touch-icon.png']
 
 self.addEventListener('install', (e) => {
